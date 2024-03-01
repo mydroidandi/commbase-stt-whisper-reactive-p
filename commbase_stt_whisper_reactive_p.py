@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 ################################################################################
-#                            commbase-stt-whisper-p                            #
+#                         commbase-stt-whisper-remote-p                        #
 #                                                                              #
 # An ASR (Automatic Speech Recognition) engine.                                #
 #                                                                              #
 # Change History                                                               #
-# 04/29/2023  Esteban Herrera Original code.                                   #
+# 02/29/2024  Esteban Herrera Original code.                                   #
 #                           Add new history entries as needed.                 #
 #                                                                              #
 #                                                                              #
@@ -30,25 +30,25 @@
 #  along with this program; if not, write to the Free Software                 #
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA   #
 
-# commbase_stt_whisper_p.py
-# Records audio input from the microphone, performs speech recognition on the
-# recorded audio, and prints the recognized text.
+# commbase-stt-whisper-remote-p.py
+# Waits for the arrival of a WAV audio file, transcribes its content using the
+# Whisper library, and then writes the transcribed text to a temporary file.
 # Requires the Whisper model used in the code. The first execution of the
 # program downloads it automatically.
 # Requires to run redirecting the standard error output (stderr) to the null
 # device (/dev/null) like this to avoid ALSA output messages:
 # shell> python commbase_stt_whisper_p.py 2>& /dev/null
 
-# Requirements
+# Imports
+import io
 import os
 import time
-import io
-from pydub import AudioSegment
-import whisper
 import tempfile
+import whisper
 
 from config import CONFIG_FILE_PATH
 from file_paths import get_chat_log_file
+from pydub import AudioSegment
 
 # A temporary directory
 temp_file = tempfile.mkdtemp()
@@ -124,7 +124,7 @@ def main():
             print("ASSISTANT: Waiting for the WAV file...")
 
             # Replace the placeholder with the actual path to your external WAV file
-            external_wav_path = "/home/commbase/Dev/mydroidandi/commbase/bundles/commbase-stt-whisper-p//recording.wav"
+            external_wav_path = "/home/commbase/Dev/mydroidandi/commbase/bundles/commbase-stt-whisper-remote-p/recording.wav"
 
             if wait_for_wav_file(external_wav_path):
                 response = recognize_audio(external_wav_path)
